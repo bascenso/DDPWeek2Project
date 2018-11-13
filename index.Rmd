@@ -1,7 +1,7 @@
 ---
 title: "World map with flags"
 author: "Bruno Ascenso"
-date: "13 de Novembro de 2018"
+date: "November 13, 2018"
 output: html_document
 ---
 
@@ -15,7 +15,7 @@ This page contains week 2 assignment of the course Developing Data Products on C
 
 The instructions were: *Create a web page using R Markdown that features a map created with Leaflet*.  
 
-So, I decided to create a world map with markers for the countries. Each marker has the country flag as icon. I couldn't easily find flags for a few countries and thus a few icons appear as **?** in the map.
+So, I decided to create a world map with markers for the countries. Each marker has the country flag as icon. I couldn't easily find flags for a few countries don't render in the map.
 
 Can you zoom to your own country? :)
 
