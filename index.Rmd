@@ -1,0 +1,61 @@
+---
+title: "World map with flags"
+author: "Bruno Ascenso"
+date: "13 de Novembro de 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview
+
+This page contains week 2 assignment of the course Developing Data Products on Coursera.  
+
+The instructions were: *Create a web page using R Markdown that features a map created with Leaflet*.  
+
+So, I decided to create a world map with markers for the countries. Each marker has the country flag as icon. I couldn't easily find flags for a few countries and thus a few icons appear as **?** in the map.
+
+Can you zoom to your own country? :)
+
+## The map
+
+Here is the code used.
+```{r worldmap}
+library(rvest)
+library(leaflet)
+
+#Country coordinates downloaded from here
+countriesURL <- "https://developers.google.com/public-data/docs/canonical/countries_csv"
+
+# Flags downloaded manually from here and stored in the 'flags' folder
+# A few are not available, but most of them are which allows for a nice render of the map
+flagsURL <- "http://flags.fmcdn.net/data/flags-mini.zip"
+
+
+# Get the country data: webscrappping ==> table
+htmlContent <- read_html(countriesURL)
+tables <- html_nodes(htmlContent, "table")
+
+theTable <- html_table(tables[1], fill = TRUE)
+countriesDF <- theTable[[1]]
+
+# Remove entries without lat and lng
+countriesDF <- countriesDF[complete.cases(countriesDF), ]
+
+# Build path for icon flags
+countriesDF$icon <- apply(countriesDF, 1, function(x) paste("flags/", x[1], ".png", sep = ""))
+
+# Generate the map
+worldCountryMap <- leaflet() %>% addTiles() %>% 
+    addMarkers(lat = countriesDF$latitude, lng = countriesDF$longitude, popup = countriesDF$name, 
+               icon = icons(countriesDF$icon), clusterOptions = markerClusterOptions())
+
+```
+
+**And here is the map. Enjoy!**
+```{r, echo = FALSE}
+worldCountryMap
+```
+
